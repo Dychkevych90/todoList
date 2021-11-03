@@ -12,6 +12,7 @@ const ListItemWrap = styled.div`
   cursor: pointer;
   border: 1px solid transparent;
   position: relative;
+
   .title {
     font-size: 16px;
     line-height: 25px;
@@ -21,23 +22,48 @@ const ListItemWrap = styled.div`
     word-break: break-all;
     padding-right: 80px;
     text-transform: uppercase;
+    color: ${props => props.doneStyle ? 'gold' : '#000'};
+    text-decoration: ${props => props.doneStyle ? 'line-through' : 'none'}
   }
+
   button {
     width: 20px;
     height: 20px;
     background: transparent;
     border: none;
     margin-right: 10px;
+
     svg {
       display: block;
       cursor: pointer;
+
       path {
         fill: #333;
+        transition: .3s;
       }
     }
   }
-  & button:last-child{
+
+  & button:last-child {
     margin-right: 0;
+  }
+
+  .btn_delete:hover {
+    svg path {
+      fill: red;
+    }
+  }
+
+  .btn_done {
+    svg path {
+      fill: ${props => props.doneStyle ? 'gold' : '#000'};
+    }
+
+    &:hover {
+      svg path {
+        fill: gold;
+      }
+    }
   }
 `
 
