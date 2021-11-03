@@ -1,6 +1,10 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
+
 import PostForm from "../postForm/postForm";
 import PostList from "../postList/postList";
+
+import {getTasks, addTask} from "../../services/services";
+import axios from "axios";
 
 const App = () => {
   const [data, setData] = useState([
@@ -10,6 +14,7 @@ const App = () => {
   ])
   const [edit, setEdit] = useState('')
   const [test, setTest] = useState(4)
+  const [tasks, setTasks] = useState([])
 
   const addItem = (text) => {
     setTest(test + 1)
@@ -43,6 +48,7 @@ const App = () => {
 
           <PostForm
             add={addItem}
+            updateData={updateData}
           />
 
           <PostList

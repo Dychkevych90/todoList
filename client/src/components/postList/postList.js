@@ -1,9 +1,12 @@
 import React from "react";
+
 import PostListItem from "../postListItem/postListItem";
+
+import {ListWrap} from './styled';
 
 const PostList = ({posts, onEdit}) => {
   return(
-    <>
+    <ListWrap>
       {
         posts.map((item, index) => {
           return (
@@ -11,7 +14,7 @@ const PostList = ({posts, onEdit}) => {
           )
         })
       }
-    </>
+    </ListWrap>
   )
 }
 

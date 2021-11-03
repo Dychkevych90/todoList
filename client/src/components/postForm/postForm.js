@@ -2,11 +2,12 @@ import React, {useState} from "react";
 
 import * as Style from './styled';
 
-const PostForm = ({add}) => {
+const PostForm = ({add, updateData}) => {
   const [text, setText] = useState('')
 
   const onValueChange = (e) => {
     setText(e.target.value)
+    updateData(e.target.value)
   }
 
   const onSubmit = (e) => {
@@ -20,7 +21,7 @@ const PostForm = ({add}) => {
     <Style.PostFormWrap onSubmit={onSubmit}>
       <input
         type="text"
-        placeholder={'type text'}
+        placeholder={'type text...'}
         onChange={onValueChange}
         value={text}
       />
