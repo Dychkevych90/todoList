@@ -1,4 +1,7 @@
 import React from "react";
+import {connect} from 'react-redux';
+
+import {deleteTask} from '../../services/services';
 
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faStar} from '@fortawesome/free-solid-svg-icons'
@@ -7,38 +10,58 @@ import {faEdit} from '@fortawesome/free-solid-svg-icons'
 
 import {ListItemWrap} from './styled';
 
-const PostListItem = ({posts, onEdit, changeValue, onDelete, editModal, openEditModal, onToggleDone}) => {
+import {getAllTasks} from '../../actions'
 
-  const onChangeValue = (e) => {
-    changeValue(e.target.value)
+const PostListItem = ({posts, info, getAllTasks}) => {
+
+// delete item from list
+  const handleDelete = async (id) => {
+    const originalTasks = info;
+    const tasks = originalTasks.filter((task) => task._id !== id);
+
+    getAllTasks(tasks)
+    await deleteTask(id);
   }
+
   return (
     <>
       <ListItemWrap
-        id={posts.id}
+        id={posts._id}
         doneStyle={posts.done}
       >
-        {
-          editModal ? (
-            <div style={{backgroundColor: 'red', width: '100%', position: 'absolute'}}>
-              <input
-                className={'title'}
-                type="text"
-                onChange={(e) => onChangeValue(e)}
-                defaultValue={posts.label}
-              />
-              <button onClick={onEdit}>save</button>
-            </div>
-          ) : (
-            <div className={'title'}>{posts.label}</div>
-          )
-        }
-        <button className={'btn_done'} onClick={onToggleDone}><FontAwesomeIcon icon={faStar}/></button>
-        <button onClick={openEditModal}><FontAwesomeIcon icon={faEdit}/></button>
-        <button className={'btn_delete'} onClick={onDelete}><FontAwesomeIcon icon={faTrash}/></button>
+        <div className={'title'}>{posts.task}</div>
+        {/*{*/}
+        {/*  editModal ? (*/}
+        {/*    <div style={{backgroundColor: 'red', width: '100%', position: 'absolute'}}>*/}
+        {/*      <input*/}
+        {/*        className={'title'}*/}
+        {/*        type="text"*/}
+        {/*        onChange={(e) => onChangeValue(e)}*/}
+        {/*        defaultValue={posts.task}*/}
+        {/*      />*/}
+        {/*      <button onClick={onEdit}>save</button>*/}
+        {/*    </div>*/}
+        {/*  ) : (*/}
+        {/*    <div className={'title'}>{posts.task}</div>*/}
+        {/*  )*/}
+        {/*}*/}
+        <button className={'btn_done'}><FontAwesomeIcon icon={faStar}/></button>
+        <button><FontAwesomeIcon icon={faEdit}/></button>
+        <button className={'btn_delete'} onClick={() => handleDelete(posts._id)}><FontAwesomeIcon icon={faTrash}/>
+        </button>
       </ListItemWrap>
     </>
   )
 }
 
-export default PostListItem;
+const mapStateToProps = (state) => {
+  return {
+    info: state.info
+  }
+};
+
+const mapDispatchToProps = {
+  getAllTasks
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostListItem);

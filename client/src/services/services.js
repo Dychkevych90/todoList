@@ -9,3 +9,7 @@ export function getTasks(){
 export function addTask(task){
   return axios.post(api, task)
 }
+
+export function deleteTask(id){
+  return axios.delete(api + "/" + id);
+}

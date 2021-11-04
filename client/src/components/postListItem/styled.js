@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 
 const ListItemWrap = styled.div`
-  width: 100%;
   display: flex;
   margin-bottom: 10px;
   justify-content: space-between;

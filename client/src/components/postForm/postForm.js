@@ -1,26 +1,30 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
+import {connect} from 'react-redux';
 
 import * as Style from './styled';
 
 import {addTask} from '../../services/services';
+import {getAllTasks} from '../../actions';
 
-const PostForm = ({add, updateData, addTask}) => {
+const PostForm = ({updateData, getAllTasks, info}) => {
   const [text, setText] = useState('')
 
   const onValueChange = (e) => {
     setText(e.target.value)
-    updateData(e.target.value)
   }
 
-  const onSubmit = (e) => {
+  // add new task to list
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    add(text);
 
+    const {data} = await addTask({task: text})
+    getAllTasks([...info, data])
     setText('')
   }
 
+
   return (
-    <Style.PostFormWrap onSubmit={onSubmit}>
+    <Style.PostFormWrap onSubmit={handleSubmit}>
       <input
         type="text"
         placeholder={'type text...'}
@@ -36,4 +40,14 @@ const PostForm = ({add, updateData, addTask}) => {
   )
 }
 
-export default PostForm;
+const mapStateToProps = (state) => {
+  return {
+    info: state.info
+  }
+};
+
+const mapDispatchToProps = {
+  getAllTasks
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostForm);

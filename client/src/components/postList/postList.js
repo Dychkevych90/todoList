@@ -1,24 +1,19 @@
 import React from "react";
+import {connect} from 'react-redux';
 
 import PostListItem from "../postListItem/postListItem";
 
 import {ListWrap} from './styled';
 
-const PostList = ({posts, onEdit, changeValue, onDelete, openEditModal, onToggleDone}) => {
+const PostList = ({info}) => {
   return (
     <ListWrap>
       {
-        posts.map((item, index) => {
+        info.map((item, index) => {
           return (
             <PostListItem
               key={index}
               posts={item}
-              onEdit={() => onEdit(item.id)}
-              onDelete={() => onDelete(item.id)}
-              openEditModal={()=> openEditModal(item.id)}
-              onToggleDone={()=> onToggleDone(item.id)}
-              changeValue={changeValue}
-              editModal={item.edited}
             />
           )
         })
@@ -27,4 +22,12 @@ const PostList = ({posts, onEdit, changeValue, onDelete, openEditModal, onToggle
   )
 }
 
-export default PostList;
+const mapStateToProps = (state) => {
+  return {
+    info: state.info
+  }
+};
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostList);
