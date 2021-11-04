@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import axios from "axios";
 
 import PostForm from "../postForm/postForm";
@@ -15,6 +15,13 @@ const App = () => {
   const [edit, setEdit] = useState('')
   const [test, setTest] = useState(4)
 
+  useEffect(() => {
+    const getTodoItem = async () => {
+      const {data} = await getTasks()
+      console.log(data)
+    }
+    getTodoItem()
+  }, [])
 
   const addItem = (text) => {
     setTest(test + 1)
@@ -60,7 +67,7 @@ const App = () => {
   }
 
   const onToggleDone = (id) => {
-    const index = data.findIndex(elem=> elem.id === id);
+    const index = data.findIndex(elem => elem.id === id);
     const old = data[index];
     const newItem = {...old, done: !old.done}
 
@@ -69,26 +76,26 @@ const App = () => {
     setData(newArr)
   }
 
-  return(
-      <div className={'app'}>
-        <div className="wrapper">
-          <h1>Todo List</h1>
+  return (
+    <div className={'app'}>
+      <div className="wrapper">
+        <h1>Todo List</h1>
 
-          <PostForm
-            add={addItem}
-            updateData={updateData}
-          />
+        <PostForm
+          add={addItem}
+          updateData={updateData}
+        />
 
-          <PostList
-            posts={data}
-            onEdit={onEdit}
-            onDelete={deleteItem}
-            changeValue={updateData}
-            openEditModal={openEditModal}
-            onToggleDone={onToggleDone}
-          />
-        </div>
+        <PostList
+          posts={data}
+          onEdit={onEdit}
+          onDelete={deleteItem}
+          changeValue={updateData}
+          openEditModal={openEditModal}
+          onToggleDone={onToggleDone}
+        />
       </div>
+    </div>
   )
 }
 
