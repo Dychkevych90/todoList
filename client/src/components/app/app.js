@@ -1,12 +1,14 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
+import {connect} from 'react-redux'
 
 import PostForm from "../postForm/postForm";
 import PostList from "../postList/postList";
 
 import {getTasks, addTask} from "../../services/services";
+import {getAllTasks} from '../../actions'
 
-const App = () => {
+const App = ({getAllTasks, info}) => {
   const [data, setData] = useState([
     {label: 'Go to supermarket', done: true, edited: false, id: 1},
     {label: 'Learn React', done: false, edited: false, id: 2},
@@ -18,6 +20,7 @@ const App = () => {
   useEffect(() => {
     const getTodoItem = async () => {
       const {data} = await getTasks()
+      getAllTasks(data)
       console.log(data)
     }
     getTodoItem()
@@ -84,6 +87,7 @@ const App = () => {
         <PostForm
           add={addItem}
           updateData={updateData}
+          addTask={addTask}
         />
 
         <PostList
@@ -99,4 +103,14 @@ const App = () => {
   )
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    info: state.info
+  }
+};
+
+const mapDispatchToProps = {
+  getAllTasks
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

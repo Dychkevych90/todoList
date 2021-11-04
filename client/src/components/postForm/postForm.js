@@ -2,7 +2,9 @@ import React, {useState} from "react";
 
 import * as Style from './styled';
 
-const PostForm = ({add, updateData}) => {
+import {addTask} from '../../services/services';
+
+const PostForm = ({add, updateData, addTask}) => {
   const [text, setText] = useState('')
 
   const onValueChange = (e) => {
