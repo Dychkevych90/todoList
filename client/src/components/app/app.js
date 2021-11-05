@@ -1,20 +1,25 @@
-import React, {useState, useEffect} from "react";
+import React, {useEffect} from "react";
 import axios from "axios";
 import {connect} from 'react-redux'
 
 import PostForm from "../postForm/postForm";
 import PostList from "../postList/postList";
 
-import {getTasks, addTask, deleteTask} from "../../services/services";
 import {getAllTasks} from '../../actions'
+import ServerSettings from '../../services/serverSettings';
 
 const App = ({getAllTasks}) => {
 
-  // get all tasks from server
+  // get All tasks from server
   useEffect(() => {
     const getTodoItem = async () => {
-      const {data} = await getTasks()
-      getAllTasks(data)
+
+      const server = new ServerSettings();
+
+      await axios.get(`${server.getApi()}api/tasks/`)
+        .then(res => {
+          getAllTasks(res.data);
+        }).catch(error => console.error(error));
     }
     getTodoItem()
   }, [])

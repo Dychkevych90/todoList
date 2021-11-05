@@ -1,4 +1,5 @@
 import React from "react";
+import axios from 'axios';
 import {connect} from 'react-redux';
 
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
@@ -9,20 +10,28 @@ import {ListItemWrap} from './styled';
 
 import {getAllTasks} from '../../actions'
 import {deleteTask, updateTask} from '../../services/services';
+import ServerSettings from '../../services/serverSettings';
 
 const PostListItem = ({posts, info, getAllTasks}) => {
 
   // delete item from list
   const handleDelete = async (id) => {
+
+    const server = new ServerSettings();
+
     const originalTasks = info;
     const tasks = originalTasks.filter((task) => task._id !== id);
 
-    getAllTasks(tasks)
-    await deleteTask(id);
+    await axios.delete(`${server.getApi()}api/tasks/${id}`)
+      .then(res => {
+        getAllTasks(tasks)
+      }).catch(error => console.error(error));
   }
 
-  // toggle in progress/done
+  // toggle state inProgress/done
   const toggleDone = async (id) => {
+    const server = new ServerSettings();
+
     const index = info.findIndex(elem => elem._id === id);
     const old = info[index]
 
@@ -30,7 +39,10 @@ const PostListItem = ({posts, info, getAllTasks}) => {
     const newArr = [...info.slice(0, index), newItem, ...info.slice(index + 1)];
 
     getAllTasks(newArr)
-    await updateTask(id, newItem)
+    await axios.put(`${server.getApi()}api/tasks/${id}`, newItem)
+      .then(res => {
+        console.log(res.data)
+      }).catch(error => console.error(error));
   }
 
   return (

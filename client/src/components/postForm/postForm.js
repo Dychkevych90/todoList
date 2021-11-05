@@ -1,27 +1,33 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
+import axios from 'axios'
 import {connect} from 'react-redux';
 
 import * as Style from './styled';
 
-import {addTask} from '../../services/services';
 import {getAllTasks} from '../../actions';
 
-const PostForm = ({updateData, getAllTasks, info}) => {
+import ServerSettings from '../../services/serverSettings';
+
+const PostForm = ({getAllTasks, info}) => {
   const [text, setText] = useState('')
 
+  // get value from form input
   const onValueChange = (e) => {
     setText(e.target.value)
   }
 
-  // add new task to list
+  // add new item on todo list
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const {data} = await addTask({task: text})
-    getAllTasks([...info, data])
-    setText('')
-  }
+    const server = new ServerSettings();
 
+    await axios.post(`${server.getApi()}api/tasks/`, {task: text})
+      .then(res => {
+        getAllTasks([...info, res.data])
+        setText('')
+      }).catch(error => console.error(error));
+  }
 
   return (
     <Style.PostFormWrap onSubmit={handleSubmit}>
