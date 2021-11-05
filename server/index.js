@@ -1,4 +1,4 @@
-const tasks = require('./urls/tasks')
+const tasks = require('./controllers/tasks')
 const connection = require('./db');
 const cors = require("cors");
 const express = require('express');
