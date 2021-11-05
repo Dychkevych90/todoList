@@ -9,7 +9,6 @@ import {faEdit} from '@fortawesome/free-solid-svg-icons'
 import {ListItemWrap} from './styled';
 
 import {getAllTasks} from '../../actions'
-import {deleteTask, updateTask} from '../../services/services';
 import ServerSettings from '../../services/serverSettings';
 
 const PostListItem = ({posts, info, getAllTasks}) => {
