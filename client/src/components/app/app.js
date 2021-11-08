@@ -8,6 +8,8 @@ import PostList from "../postList/postList";
 import {getAllTasks} from '../../actions'
 import ServerSettings from '../../services/serverSettings';
 
+import './styled.scss';
+
 const App = ({getAllTasks}) => {
 
   // get All tasks from server

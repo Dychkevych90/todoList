@@ -6,7 +6,8 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faCheck} from '@fortawesome/free-solid-svg-icons'
 import {faTrash} from '@fortawesome/free-solid-svg-icons'
 import {faEdit} from '@fortawesome/free-solid-svg-icons'
-import {ListItemWrap} from './styled';
+//import {ListItemWrap} from './styled';
+import './styled.scss'
 
 import {getAllTasks} from '../../actions'
 import ServerSettings from '../../services/serverSettings';
@@ -68,11 +69,9 @@ const PostListItem = ({posts, info, getAllTasks}) => {
 
   return (
     <>
-      <ListItemWrap
-        id={posts._id}
-        doneStyle={posts.completed}
+      <div className={'listItem'}
+           id={posts._id}
       >
-        {/*<div className={'title'}>{posts.task}</div>*/}
         {
           editModal ? (
             <div style={{backgroundColor: 'red', width: '100%', position: 'absolute'}}>
@@ -83,17 +82,18 @@ const PostListItem = ({posts, info, getAllTasks}) => {
                 defaultValue={posts.task}
                 ref={inputEl}
               />
-              <button onClick={()=> onEdit(posts._id)}>save</button>
+              <button className={'editInputBtn'} onClick={() => onEdit(posts._id)}>save</button>
             </div>
           ) : (
-            <div className={'title'}>{posts.task}</div>
+            <div className={`${posts.completed && 'done'} title`}>{posts.task}</div>
           )
         }
-        <button className={'btn_done'} onClick={() => toggleDone(posts._id)}><FontAwesomeIcon icon={faCheck}/></button>
-        <button onClick={()=> setEditModal(true)}><FontAwesomeIcon icon={faEdit}/></button>
+        <button className={`${posts.completed && 'check'} btn_done`} onClick={() => toggleDone(posts._id)}>
+          <FontAwesomeIcon icon={faCheck}/></button>
+        <button onClick={() => setEditModal(true)}><FontAwesomeIcon icon={faEdit}/></button>
         <button className={'btn_delete'} onClick={() => handleDelete(posts._id)}><FontAwesomeIcon icon={faTrash}/>
         </button>
-      </ListItemWrap>
+      </div>
     </>
   )
 }

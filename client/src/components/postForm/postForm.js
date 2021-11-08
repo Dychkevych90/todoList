@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import axios from 'axios'
 import {connect} from 'react-redux';
 
-import * as Style from './styled';
+import './styled.scss';
 
 import {getAllTasks} from '../../actions';
 
@@ -30,7 +30,7 @@ const PostForm = ({getAllTasks, info}) => {
   }
 
   return (
-    <Style.PostFormWrap onSubmit={handleSubmit}>
+    <form className={'postForm'} onSubmit={handleSubmit}>
       <input
         type="text"
         placeholder={'type text...'}
@@ -42,7 +42,7 @@ const PostForm = ({getAllTasks, info}) => {
       >
         send
       </button>
-    </Style.PostFormWrap>
+    </form>
   )
 }
 

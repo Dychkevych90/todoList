@@ -3,11 +3,11 @@ import {connect} from 'react-redux';
 
 import PostListItem from "../postListItem/postListItem";
 
-import {ListWrap} from './styled';
+import './styled.scss';
 
 const PostList = ({info}) => {
   return (
-    <ListWrap>
+    <div className={'taskList'}>
       {
         info.map((item, index) => {
           return (
@@ -18,7 +18,7 @@ const PostList = ({info}) => {
           )
         })
       }
-    </ListWrap>
+    </div>
   )
 }
 
