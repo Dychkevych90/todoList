@@ -20,8 +20,8 @@ const ListItemWrap = styled.div`
     text-align: left;
     word-break: break-all;
     padding-right: 80px;
-    text-transform: uppercase;
-    color: ${props => props.doneStyle ? 'gold' : '#000'};
+    text-transform: ${props => props.doneStyle ? 'lowercase' : 'uppercase'};
+    color: ${props => props.doneStyle ? 'gray' : '#000'};
     text-decoration: ${props => props.doneStyle ? 'line-through' : 'none'}
   }
 
@@ -35,6 +35,8 @@ const ListItemWrap = styled.div`
     svg {
       display: block;
       cursor: pointer;
+      width: 15px!important;
+      height: 15px!important;
 
       path {
         fill: #333;
@@ -55,12 +57,12 @@ const ListItemWrap = styled.div`
 
   .btn_done {
     svg path {
-      fill: ${props => props.doneStyle ? 'gold' : '#000'};
+      fill: ${props => props.doneStyle ? '#54E018FF' : '#333'};
     }
 
     &:hover {
       svg path {
-        fill: gold;
+        fill: #54E018FF;
       }
     }
   }
