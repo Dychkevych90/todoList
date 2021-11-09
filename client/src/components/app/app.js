@@ -21,9 +21,23 @@ const App = ({getAllTasks}) => {
       await axios.get(`${server.getApi()}api/tasks/`)
         .then(res => {
           getAllTasks(res.data);
+          console.log(res.data)
         }).catch(error => console.error(error));
     }
     getTodoItem()
+  }, [])
+
+  useEffect(() => {
+    const getUsers = async () => {
+
+      const server = new ServerSettings();
+
+      await axios.get(`${server.getApi()}api/auth/users`)
+        .then(res => {
+          console.log(res.data);
+        }).catch(error => console.error(error));
+    }
+    getUsers()
   }, [])
 
   return (
