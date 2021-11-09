@@ -1,0 +1,37 @@
+.registrationForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  input {
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 18px;
+    outline: none;
+    margin-bottom: 20px;
+  }
+  button {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 18px;
+    text-transform: uppercase;
+    background-color: tomato;
+    color: #fff;
+    min-height: 39px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}

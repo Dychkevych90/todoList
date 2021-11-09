@@ -1,0 +1,23 @@
+.header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30px 20px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background-color: tomato;
+
+  button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .name {
+    font-size: 16px;
+    color: #fff;
+  }
+}

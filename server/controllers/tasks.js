@@ -4,6 +4,17 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {
   try {
+    // const {task, userId} = req.body;
+    //
+    // const todo = await new Task({
+    //   task,
+    //   author: userId,
+    //   completed: false
+    // })
+    //
+    // await todo.save()
+    //
+    // res.json(todo)
     const task = await new Task(req.body).save();
     res.send(task);
   } catch (error) {

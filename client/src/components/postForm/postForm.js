@@ -22,10 +22,14 @@ const PostForm = ({getAllTasks, info}) => {
 
     const server = new ServerSettings();
 
-    await axios.post(`${server.getApi()}api/tasks/`, {task: text})
+    const userId = '123'
+
+    await axios.post(`${server.getApi()}api/tasks/`, {task: text}
+    )
       .then(res => {
         getAllTasks([...info, res.data])
         setText('')
+        console.log(res.data)
       }).catch(error => console.error(error));
   }
 

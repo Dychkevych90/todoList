@@ -5,6 +5,14 @@ const getAllTasks = (info) => {
   }
 }
 
+const getAllUsers = (user) => {
+  return {
+    type: "GET_ALL_USERS",
+    user
+  }
+}
+
 export {
-  getAllTasks
+  getAllTasks,
+  getAllUsers
 }
