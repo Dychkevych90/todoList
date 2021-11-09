@@ -1,17 +1,16 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import axios from 'axios'
 import {connect} from 'react-redux';
 
 import './styled.scss';
 
-import {getAllTasks} from '../../actions';
+import {getAllTasks, getSingleUser} from '../../actions';
 
 import ServerSettings from '../../services/serverSettings';
 
-const PostForm = ({getAllTasks, info}) => {
+const PostForm = ({getAllTasks, info, getSingleUser, currentTarget}) => {
   const [text, setText] = useState('')
 
-  // get value from form input
   const onValueChange = (e) => {
     setText(e.target.value)
   }
@@ -22,9 +21,7 @@ const PostForm = ({getAllTasks, info}) => {
 
     const server = new ServerSettings();
 
-    const userId = '123'
-
-    await axios.post(`${server.getApi()}api/tasks/`, {task: text}
+    await axios.post(`${server.getApi()}api/tasks/`, {task: text, author: currentTarget._id}
     )
       .then(res => {
         getAllTasks([...info, res.data])
@@ -32,6 +29,22 @@ const PostForm = ({getAllTasks, info}) => {
         console.log(res.data)
       }).catch(error => console.error(error));
   }
+
+  //get currently users
+  useEffect(() => {
+    const getUsers = async () => {
+      const token = JSON.parse(localStorage.getItem('token'));
+      const statusToken = token.email;
+      const server = new ServerSettings();
+
+      await axios.get(`${server.getApi()}api/auth/users`)
+        .then(res => {
+          const findUser = res.data.find(u => u.email === statusToken);
+          getSingleUser(findUser)
+        }).catch(error => console.error(error));
+    }
+    getUsers().catch(error => console.error(error));
+  }, [])
 
   return (
     <form className={'postForm'} onSubmit={handleSubmit}>
@@ -52,12 +65,14 @@ const PostForm = ({getAllTasks, info}) => {
 
 const mapStateToProps = (state) => {
   return {
-    info: state.info
+    info: state.info,
+    currentTarget: state.currentTarget
   }
 };
 
 const mapDispatchToProps = {
-  getAllTasks
+  getAllTasks,
+  getSingleUser
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostForm);

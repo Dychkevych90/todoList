@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
 import {NavLink} from 'react-router-dom'
-import {Redirect} from 'react-router'
 import axios from 'axios';
 
 import ServerSettings from '../../../services/serverSettings'
@@ -29,7 +28,7 @@ const Registration = () => {
       .then(res => {
         console.log(res.data)
         localStorage.setItem('token', JSON.stringify({email: form.email}))
-        window.reload()
+        document.location.reload()
       }).catch(error => console.error(error));
   }
 
@@ -37,8 +36,8 @@ const Registration = () => {
     <div className={'wrapper'}>
       <h2>Registration Page</h2>
       <form className={'registrationForm'} onSubmit={(e) => createNewUser(e)}>
-        <input type="text" required placeholder={'email'} name={'email'} onChange={changeHandler}/>
-        <input type="password" required placeholder={'password'} name={'password'} onChange={changeHandler}/>
+        <input type="email" required placeholder={'email'} name={'email'} onChange={changeHandler}/>
+        <input type="password" required placeholder={'min length 6 symbols'} name={'password'} onChange={changeHandler}/>
         <button
           type={'submit'}
         >

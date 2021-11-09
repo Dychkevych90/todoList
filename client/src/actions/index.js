@@ -12,7 +12,15 @@ const getAllUsers = (user) => {
   }
 }
 
+const getSingleUser = (currentTarget) => {
+  return {
+    type: "GET_USER",
+    currentTarget
+  }
+}
+
 export {
   getAllTasks,
-  getAllUsers
+  getAllUsers,
+  getSingleUser
 }

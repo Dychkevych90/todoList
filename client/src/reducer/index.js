@@ -1,7 +1,7 @@
 const initialState = {
-  tasks: [],
   info: [],
-  user: []
+  user: [],
+  currentTarget: {}
 }
 
 const reducer = (state = initialState, action) => {
@@ -18,6 +18,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         user: action.user
+      }
+
+    case "GET_USER":
+      return {
+        ...state,
+        currentTarget: action.currentTarget
       }
 
     default:
