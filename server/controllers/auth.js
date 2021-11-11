@@ -2,6 +2,8 @@ const User = require("../models/users");
 const express = require("express");
 const router = express.Router();
 const {check, validationResult} = require('express-validator')
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 router.post('/registration',
   [
@@ -24,11 +26,13 @@ router.post('/registration',
       const inUser = await User.findOne({email})
 
       if (inUser) {
-        return res.status(300).json({massage: 'email is already busy, try another'})
+        return res.status(400).json({massage: 'email is already busy, try another'})
       }
 
+      const hashedPassword = await bcrypt.hash(password, 12)
+
       const user = new User({
-        email, password
+        email, password: hashedPassword
       })
 
       await user.save()
@@ -57,19 +61,28 @@ router.post('/login',
 
       const {email, password} = req.body;
 
-      const user = await User.findOne({email})
+      const user = await User.findOne({ email })
 
       if (!user) {
         return res.status(400).json({massage: 'email is not found'})
       }
 
-      const userPass = await User.findOne({password})
+      const isMatch = bcrypt.compare(password, user.password)
 
-      if (!userPass) {
-        return res.status(400).json({massage: 'wrong password'})
+      if(!isMatch){
+        return res.status(400).json({massage: 'password do not match'})
       }
 
-      res.json({UserId: user.id})
+      const jwtSecret = 'asdjsldfjdngaskdja;sdja;sdljalsdjnfmdngfsdjfjsdf';
+
+      const token = jwt.sign(
+        {userId: user.id},
+        jwtSecret,
+        {expiresIn: '1h'}
+      )
+
+      res.json({token, userId: user.id})
+
     } catch (e) {
       console.log(e)
     }
