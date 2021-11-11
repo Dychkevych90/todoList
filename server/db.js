@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+const { MONGO_URI } = process.env;
+
 module.exports = async () => {
   const connectionParams = {
     useNewUrlParser: true,
@@ -7,7 +9,7 @@ module.exports = async () => {
     useUnifiedTopology: true,
   };
   await mongoose.connect(
-    "mongodb://localhost/tasks",
+   MONGO_URI,
     connectionParams
   );
   console.log("Connected to database.");
