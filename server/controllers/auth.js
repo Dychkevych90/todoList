@@ -4,13 +4,14 @@ const router = express.Router();
 const {check, validationResult} = require('express-validator')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const auth = require("../middleware/auth");
 
 router.post('/registration',
   [
     check('email', 'email is not correct').isEmail(),
     check('password', 'password is not correct').isLength({min: 6})
-  ]
-  , async (req, res) => {
+  ],
+  async (req, res) => {
     try {
 
       const errors = validationResult(req)
@@ -21,7 +22,7 @@ router.post('/registration',
         })
       }
 
-      const {email, password} = req.body;
+      const {email, password, first_name} = req.body;
 
       const inUser = await User.findOne({email})
 
@@ -31,13 +32,25 @@ router.post('/registration',
 
       const hashedPassword = await bcrypt.hash(password, 12)
 
-      const user = new User({
-        email, password: hashedPassword
-      })
+      // Create user in our database
+      const user = await User.create({
+        first_name,
+        email: email.toLowerCase(),
+        password: hashedPassword,
+      });
 
-      await user.save()
+      // Create token
+      // save user token
+      user.token = jwt.sign(
+        {user_id: user._id, email},
+        process.env.TOKEN_KEY,
+        {
+          expiresIn: "2h",
+        }
+      );
 
-      res.status(201).json({message: 'user created'})
+      // return new user
+      res.status(201).json(user);
     } catch (e) {
       console.log(e)
     }
@@ -61,7 +74,7 @@ router.post('/login',
 
       const {email, password} = req.body;
 
-      const user = await User.findOne({ email })
+      const user = await User.findOne({email})
 
       if (!user) {
         return res.status(400).json({massage: 'email is not found'})
@@ -69,19 +82,18 @@ router.post('/login',
 
       const isMatch = bcrypt.compare(password, user.password)
 
-      if(!isMatch){
+      if (!isMatch) {
         return res.status(400).json({massage: 'password do not match'})
       }
 
-      const jwtSecret = 'asdjsldfjdngaskdja;sdja;sdljalsdjnfmdngfsdjfjsdf';
-
-      const token = jwt.sign(
+      user.token = jwt.sign(
         {userId: user.id},
-        jwtSecret,
-        {expiresIn: '1h'}
-      )
+        process.env.TOKEN_KEY,
+        {expiresIn: '2h'}
+      );
 
-      res.json({token, userId: user.id})
+      // user
+      res.status(200).json(user);
 
     } catch (e) {
       console.log(e)
@@ -95,6 +107,22 @@ router.get("/users", async (req, res) => {
   } catch (error) {
     res.status(500).send('Something broke!');
   }
+});
+
+router.get("/welcome", auth, (req, res) => {
+  res.status(200).send("Welcome 🙌 ");
+});
+
+// This should be the last route else any after it won't work
+router.use("*", (req, res) => {
+  res.status(404).json({
+    success: "false",
+    message: "Page not found",
+    error: {
+      statusCode: 404,
+      message: "You reached a route that is not defined on this server",
+    },
+  });
 });
 
 module.exports = router;

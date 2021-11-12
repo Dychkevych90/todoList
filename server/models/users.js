@@ -11,7 +11,9 @@ const schema = new Schema({
     type: String,
     require: true
   },
-  todos: [{type: Schema.Types.ObjectId, ref: 'Task'}]
+  todos: [{type: Schema.Types.ObjectId, ref: 'Task'}],
+  token: { type: String },
+  first_name: { type: String, default: null },
 })
 
 module.exports = mongoose.model('User', schema)
