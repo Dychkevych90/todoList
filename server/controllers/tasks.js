@@ -2,21 +2,21 @@ const Task = require("../models/tasks");
 const express = require("express");
 const router = express.Router();
 
-router.post("/", async (req, res) => {
+router.post("/add", async (req, res) => {
   try {
-    // const {task, userId} = req.body;
-    //
-    // const todo = await new Task({
-    //   task,
-    //   author: userId,
-    //   completed: false
-    // })
-    //
-    // await todo.save()
-    //
-    // res.json(todo)
-    const task = await new Task(req.body).save();
-    res.send(task);
+    const {task, author} = req.body;
+
+    const todo = await new Task({
+      task,
+      author,
+      completed: false
+    })
+
+    await todo.save()
+
+    res.send(todo)
+    // const task = await new Task(req.body).save();
+    // res.send(task);
   } catch (error) {
     res.status(500).send('Something broke!');
   }
@@ -24,8 +24,10 @@ router.post("/", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    const tasks = await Task.find();
-    res.send(tasks);
+    const { userId } = req.query;
+
+    const tasks = await Task.find({author: userId});
+    res.json(tasks);
   } catch (error) {
     res.status(500).send('Something broke!');
   }

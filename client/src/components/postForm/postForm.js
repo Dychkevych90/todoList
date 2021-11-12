@@ -9,10 +9,10 @@ import {getAllTasks, getSingleUser} from '../../actions';
 import ServerSettings from '../../services/serverSettings';
 
 const PostForm = ({getAllTasks, info, getSingleUser, currentTarget}) => {
-  const [text, setText] = useState('')
+  const [task, setTask] = useState('')
 
   const onValueChange = (e) => {
-    setText(e.target.value)
+    setTask(e.target.value)
   }
 
   // add new item on todo list
@@ -21,11 +21,13 @@ const PostForm = ({getAllTasks, info, getSingleUser, currentTarget}) => {
 
     const server = new ServerSettings();
 
-    await axios.post(`${server.getApi()}api/tasks/`, {task: text, author: currentTarget._id}
+    const userId = currentTarget._id;
+
+    await axios.post(`${server.getApi()}api/tasks/add`, {task: task, author: userId}
     )
       .then(res => {
         getAllTasks([...info, res.data])
-        setText('')
+        setTask('')
         console.log(res.data)
       }).catch(error => console.error(error));
   }
@@ -52,7 +54,7 @@ const PostForm = ({getAllTasks, info, getSingleUser, currentTarget}) => {
         type="text"
         placeholder={'type text...'}
         onChange={onValueChange}
-        value={text}
+        value={task}
       />
       <button
         type={'submit'}

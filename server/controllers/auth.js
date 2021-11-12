@@ -34,7 +34,7 @@ router.post('/registration',
 
       // Create user in our database
       const user = await User.create({
-        first_name,
+        first_name: first_name,
         email: email.toLowerCase(),
         password: hashedPassword,
       });

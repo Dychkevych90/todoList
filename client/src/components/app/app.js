@@ -13,22 +13,31 @@ import ServerSettings from '../../services/serverSettings';
 
 import './styled.scss';
 
-const App = ({getAllTasks, getAllUsers}) => {
+const App = ({getAllTasks, getAllUsers, currentTarget}) => {
   const [loading, setLoading] = useState(false)
 
   // get All tasks from server
-  useEffect(() => {
     const getTodoItem = async () => {
 
       const server = new ServerSettings();
 
-      await axios.get(`${server.getApi()}api/tasks/`)
+      const userId = currentTarget._id;
+
+      await axios.get(`${server.getApi()}api/tasks/`,
+        {
+          headers: {
+            'Content-type': 'application/json'
+          },
+          params: {userId}
+        })
         .then(res => {
           getAllTasks(res.data);
+          console.log(res.data)
         }).catch(error => console.error(error));
     }
+  useEffect(() => {
     getTodoItem().catch(error => console.error(error));
-  }, [])
+  }, [currentTarget._id])
 
   // get all users
   useEffect(() => {
@@ -116,7 +125,8 @@ const App = ({getAllTasks, getAllUsers}) => {
 const mapStateToProps = (state) => {
   return {
     info: state.info,
-    user: state.user
+    user: state.user,
+    currentTarget: state.currentTarget
   }
 };
 
